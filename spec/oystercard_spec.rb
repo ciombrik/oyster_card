@@ -22,10 +22,22 @@ describe Oystercard do
       end
     end
   end 
-  describe "#deduct" do
+  describe "#journey" do
     it "deduct the money for the journey" do 
       oystercard.topup(10)
       expect(oystercard.deduct(:amount)).to eq 7
+    end 
+    it "allow card to touch in" do
+      oystercard.touch_in(:card)
+      expect(oystercard.in_use).to eq true 
+    end
+    it "allow card to touch out" do
+      oystercard.touch_out(:card)
+      expect(oystercard.in_use).to eq false 
+    end
+    it "shows if the card is in use " do 
+      oystercard.touch_in(:card)
+      expect(oystercard.in_use).to eq true 
     end 
   end 
 end
