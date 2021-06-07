@@ -8,4 +8,9 @@ describe Oystercard do
     expect(oystercard.balance).to eq 0
   end
 
+  it 'adds money to the card' do
+    oystercard.topup(20)
+    expect(oystercard.balance).to eq 20
+  end
+
 end
