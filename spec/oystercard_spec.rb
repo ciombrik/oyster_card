@@ -21,6 +21,11 @@ describe Oystercard do
         expect { oystercard.topup(1) }.to raise_error "Can't top-up, card limit is £90"
       end
     end
-  end
-
+  end 
+  describe "#deduct" do
+    it "deduct the money for the journey" do 
+      oystercard.topup(10)
+      expect(oystercard.deduct(:amount)).to eq 7
+    end 
+  end 
 end
