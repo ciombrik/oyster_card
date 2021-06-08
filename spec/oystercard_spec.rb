@@ -25,23 +25,31 @@ describe Oystercard do
   describe "#journey" do
     it "deduct the money for the journey" do
       oystercard.topup(10)
-      expect{ oystercard.touch_out 3 }.to change{ oystercard.balance }.by -3
+      expect{ oystercard.touch_out }.to change{ oystercard.balance }.by -3
     end
+
+    let(:station){ double :station }
+    it "touch_in remembers the entry station" do
+      oystercard.topup(5)
+      oystercard.touch_in(station)
+      expect(oystercard.entry_station).to eq station
+    end
+
     it "allow card to touch in" do
       oystercard.topup(5)
-      oystercard.touch_in(:card)
+      oystercard.touch_in(station)
       expect(oystercard.in_use).to eq true
     end
     it "rasies an error when below minimum tap in value" do
-      expect { oystercard.touch_in(:card) }.to raise_error "Below minimum value"
+      expect { oystercard.touch_in(station) }.to raise_error "Below minimum value"
     end
     it "allow card to touch out" do
-      oystercard.touch_out(:card)
+      oystercard.touch_out()
       expect(oystercard.in_use).to eq false
     end
     it "shows if the card is in use " do
       oystercard.topup(10)
-      oystercard.touch_in(:card)
+      oystercard.touch_in(station)
       expect(oystercard.in_use).to eq true
     end
   end
