@@ -25,7 +25,7 @@ describe Oystercard do
   describe "#journey" do
     it "deduct the money for the journey" do
       oystercard.topup(10)
-      expect(oystercard.deduct(:amount)).to eq 7
+      expect{ oystercard.touch_out 3 }.to change{ oystercard.balance }.by -3
     end
     it "allow card to touch in" do
       oystercard.topup(5)

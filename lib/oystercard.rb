@@ -13,19 +13,20 @@ class Oystercard
     raise "Can't top-up, card limit is £90" if @balance >= Oystercard::CARD_LIMIT
     @balance += amount
   end
-  def deduct(amount)
+  private def deduct(amount)
     amount = Oystercard::JOURNEY_PRICE
     @balance -= amount
-   end
-   def touch_in(card)
+  end
+  def touch_in(card)
     raise "Below minimum value" if @balance < Oystercard::JOURNEY_PRICE
     @in_use = true
-   end
-   def touch_out(card)
+  end
+  def touch_out(card)
+     deduct(JOURNEY_PRICE)
     @in_use = false
-   end
-   def in_journey?(card)
+  end
+  def in_journey?(card)
     if @in_use == true
     end
-   end
+  end
 end
