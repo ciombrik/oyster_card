@@ -27,6 +27,8 @@ describe Oystercard do
     end
   end
   describe "#journey" do
+    let(:exit_station){ double :station }
+    let(:journey){{entry_station: entry_station, exit_station: exit_station}}
     it "deduct the money for the journey" do
       oystercard.topup(10)
       expect{ oystercard.touch_out(exit_station) }.to change{ oystercard.balance }.by -3
@@ -37,28 +39,35 @@ describe Oystercard do
       oystercard.touch_in(entry_station)
       expect(oystercard.entry_station).to eq entry_station
     end
-    it "allow card to touch in" do
-      oystercard.topup(5)
-      oystercard.touch_in(entry_station)
-      expect(oystercard.in_use).to eq true
-    end
+    # it "allow card to touch in" do
+    #   oystercard.topup(5)
+    #   oystercard.touch_in(entry_station)
+    #   expect(oystercard.in_use).to eq true
+    # end
     it "rasies an error when below minimum tap in value" do
-      expect { oystercard.touch_in(entry_station) }.to raise_error "Below minimum value"
+
+      expect { oystercard.touch_in(entry_station) }.to raise_error "Below minimum value"  if oystercard.balance == Oystercard::JOURNEY_PRICE
     end
-    it "allow card to touch out" do
-      oystercard.touch_out(exit_station)
-      expect(oystercard.in_use).to eq false
-    end
-    let(:exit_station){ double :station }
+    # it "allow card to touch out" do
+    #   oystercard.touch_out(exit_station)
+    #   expect(oystercard.in_use).to eq false
+    # end
+   
     it "touch_out remembers the exit station" do
       oystercard.topup(5)
       oystercard.touch_out(exit_station)
       expect(oystercard.exit_station).to eq exit_station
     end
-    it "shows if the card is in use " do
-      oystercard.topup(10)
+    # it "shows if the card is in use " do
+    #   oystercard.topup(10)
+    #   oystercard.touch_in(entry_station)
+    #   expect(oystercard.in_use).to eq true
+    # end
+    it "can store journeys" do
+
       oystercard.touch_in(entry_station)
-      expect(oystercard.in_use).to eq true
+      oystercard.touch_out(exit_station)
+      expect(oystercard.journeys).to include (journey)
     end
   end
 end
